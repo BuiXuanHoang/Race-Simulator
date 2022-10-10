@@ -1,3 +1,3 @@
-# Race Simulator Project in C and change something.
+# Race Simulator Project in C
 
   Codecademy's final project
