@@ -1,3 +1,3 @@
-# Race Simulator Project C and something...
+# Race Simulator Project C
 
   Codecademy's final project
