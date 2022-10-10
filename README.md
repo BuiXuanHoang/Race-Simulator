@@ -1,3 +1,3 @@
-# Race Simulator Project in C
+# Race Simulator Project in C and ...
 
   Codecademy's final project
