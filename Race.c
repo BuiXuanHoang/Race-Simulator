@@ -1,79 +1,85 @@
 #include<stdio.h>
-#include<stdlib.h>
-#include<time.h>
 #include<string.h>
-  struct Race{
-    int numberofLaps;
-    int currentLaps;
-    char nameWinner[20];
-    char colorWinner[20];
-  };
-  struct RaceCar{
-    char Name[20];
-    char Color[20];
-    int total;
-  };
-  
-  void Welcome(struct RaceCar car1, struct RaceCar car2){
-    printf(" Welcome everyone come to the Race between %s and %s!!!!\n Let's get started\n",car1.Name, car2.Name);
+#include<time.h>
+#include<stdlib.h>
+   
+   struct Race{
+     char winner[20];
+     char color_winner[20];
+     int total_lap;
+     int current_lap;
+   };
 
-  }
+   struct Race_Car{
+     char name[20];
+     char color[20];
+     int mark;
+   };
+   
+    /* PRINT PATH */ 
+   void Welcome(struct Race_Car *race_car1, struct Race_Car *race_car2){
+     fprintf(stdout,"Welcome everyone, Let's watch the race between %s in %s car and %s in %s car\n",race_car1->name,race_car1->color,race_car2->name,race_car2->color);
+   }
 
-  void Countdown(void){
-    printf(" Get Started...\n 3\n 2\n 1    Start\n");
-  }
 
-  void CongLaps(struct Race *race){
-    printf("Laps %d: %s in %s car is Winner!\n",race->currentLaps, race->nameWinner, race->colorWinner);
-  }
-  
-  void Cong(struct Race *race){
-     printf("And the Winner is %s in %s car!!!!!", race->nameWinner, race->colorWinner);
-  }
-  
-  //logic function
-  int cal(void){
-    int speed=rand()%3+1;
-    int boost=rand()%3+1;
-    int neuron=rand()%3+1;
-    int sum=speed+boost+neuron;
-    return sum;
-  }
-  
-  void updSpeed(struct RaceCar *car){
-    car->total+=cal();
-  }
+   void coutdown(){
+     fprintf(stdout,"The match begin in 3 2 1\n\tGo!!!!\n");
+   }
 
-  void updWiner(struct Race *race, struct RaceCar *car1, struct RaceCar *car2){
-    if(car1->total>car2->total){
-      strcpy(race->nameWinner,car1->Name);
-      strcpy(race->colorWinner,car1->Color);
+
+   void Congratulation_lap(struct Race *race){
+     fprintf(stdout,"Congratulation %s in %s car win lap %d\n", (*race).winner, (*race).color_winner, (*race).current_lap);
+   }
+   
+   void Winner(struct Race *race){
+    fprintf(stdout,"-\tTHE WINNER IS: %s in %s!!!!!",(*race).winner,(*race).color_winner);
+   }
+
+    // LOGICS PATH
+   
+   int random_mark(){
+    int speed=rand()%1000+1;  // INCREASING % RANDOM
+    int boost=rand()%1000+1;  // AND REDUCE MAXIMUM PERCENTAGE DRAW IN THE RACE
+    int spirit=rand()%1000+1;
+     int total=speed+boost+spirit;
+      return total;
+   }
+
+   void update_mark(struct Race_Car *race_car1, struct Race_Car *race_car2){
+    (*race_car1).mark=random_mark();
+    (*race_car2).mark=random_mark();
+   }
+
+   void update_winner(struct Race *race, struct Race_Car *race_car1, struct Race_Car *race_car2){
+    if((*race_car1).mark>(*race_car2).mark){
+      strcpy((*race).winner,race_car1->name);
+      strcpy((*race).color_winner,race_car1->color);
     }
-    else{
-      strcpy(race->nameWinner,car2->Name);
-      strcpy(race->colorWinner,car2->Color);
-    }
+    else if(race_car1->mark<race_car2->mark){
+      strcpy(race->winner,race_car2->name);
+      strcpy(race->color_winner,race_car2->color);
+   }
   }
 
-  
-  void Start( struct RaceCar *car1, struct RaceCar *car2){
-     struct Race race={5,1,"",""};
-     Welcome(*car1,*car2);
-     Countdown();
-     for(int i=0;i<race.numberofLaps;++i){
-        updSpeed(car1);
-        updSpeed(car2);
-        updWiner(&race,car1,car2);
-        CongLaps(&race);
-        race.currentLaps+=1;
+   void start_race(struct Race_Car *race_car1, struct Race_Car *race_car2){
+      struct Race race={"","",5,1};
+      Welcome(race_car1,race_car2);
+      coutdown();
+      for (int i = 0; i < 5; i++){
+         update_mark(race_car1,race_car2);
+         update_winner(&race,race_car1,race_car2);
+         Congratulation_lap(&race);
+         ++(race.current_lap);
+      }
+      Winner(&race);
     }
-        Cong(&race);
- }
-
-  int main(){
-    srand(time(NULL));
-    struct RaceCar car1={"Mario","Red",'0'};
-    struct RaceCar car2={"Luigi","Green",'0'};
-    Start(&car1, &car2);
+   
+   int main(){
+      srand(time(NULL));
+      struct Race_Car race_car1={"Mario","Red",};
+      struct Race_Car race_car2={"Luigi","Green",};
+      start_race(&race_car1,&race_car2);
     return 0;
-  }
+   }
+
+    
